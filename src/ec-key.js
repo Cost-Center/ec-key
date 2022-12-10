@@ -1,6 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
+const createECDH = require('create-ecdh');
 const asn = require('asn1.js');
 const util = require('util');
 
@@ -379,7 +380,7 @@ ECKey.createECKey = function(curve) {
   if (curves[curve]) curve = curves[curve];
   if (!jwkCurves[curve]) throw new TypeError("Invalid/unknown curve \"" + curve + "\"");
 
-  var ecdh = crypto.createECDH(curve);
+  var ecdh = createECDH(curve);
 
   ecdh.generateKeys();
   return new ECKey({
@@ -399,7 +400,7 @@ ECKey.prototype.computeSecret = function computeSecret(key) {
 
 ECKey.prototype.createECDH = function createECDH() {
   if (this.isPrivateECKey) {
-    var ecdh = crypto.createECDH(this.curve);
+    var ecdh = createECDH(this.curve);
     ecdh.setPublicKey(this.publicCodePoint);
     ecdh.setPrivateKey(this.d);
 
